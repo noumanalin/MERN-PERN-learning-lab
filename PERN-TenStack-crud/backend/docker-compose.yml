@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+# 👉 1. Postgres Database Container
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DATABASE}
+    ports:
+      - "5432:5432"
+    volumes:
+      # ✅ For Postgres 18+, recommended path is /var/lib/postgresql
+      - postgres_data:/var/lib/postgresql
+
+# 👉 2. PgAdmin Container
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_ui
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+# 👉 3. Backend Container
+  backend:
+    build: .
+    container_name: pern_backend
+    restart: always
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    environment:
+      # ✅ Inside Docker network, backend connects to Postgres via service name
+      PG_HOST: postgres
+    command: npm run dev
+
+volumes:
+  postgres_data:
+
