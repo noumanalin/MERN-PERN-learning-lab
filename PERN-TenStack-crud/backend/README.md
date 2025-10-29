@@ -137,3 +137,14 @@ Now your PgAdmin is connected to your Postgres container.
 - Database Host (inside Docker) → postgres
 
 Everything runs isolated yet connected inside Docker! 🐳🔥
+
+
+# 🧮 CRUD API Summary
+
+| HTTP Method | Endpoint | Controller | Description |
+|-------------|----------|------------|-------------|
+| GET | `/api/employees` | `getAllEmployees` | Fetch all employees |
+| GET | `/api/employees/:id` | `getEmployeeById` | Fetch single employee |
+| POST | `/api/employees` | `createEmployee` | Create new employee |
+| PUT | `/api/employees/:id` | `updateEmployeeById` | Update employee |
+| DELETE | `/api/employees/:id` | `deleteEmployeeById` | Delete employee |

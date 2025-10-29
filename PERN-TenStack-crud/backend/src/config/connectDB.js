@@ -4,14 +4,14 @@ dotenv.config();
 
 const { Pool } = pg;
 
-const { PG_USER, PG_PASSWORD, PG_DATABASE, PG_HOST, PG_PORT } = process.env;
+// const { PG_USER, PG_PASSWORD, PG_DATABASE, PG_HOST, PG_PORT } = process.env;
 
 const pool = new Pool({
-    user: PG_USER,
-    host: PG_HOST,
-    database: PG_DATABASE,
-    password: PG_PASSWORD,
-    port: PG_PORT,
+    user: process.env.PG_USER,
+    host: process.env.PG_HOST,
+    database: process.env.PG_DATABASE,
+    password: process.env.PG_PASSWORD,
+    port: process.env.PG_PORT,
 });
 
 pool.connect()
@@ -27,14 +27,14 @@ pool.on('error', (err) => {
 });
 
 // Reusable query helper
-// export const query = (text, params) => pool.query(text, params);
-export const query = async (text, params) => {
-  try {
-    return await pool.query(text, params);
-  } catch (err) {
-    console.error('❌ Query error:', err);
-    throw err;
-  }
-};
-
+export const query = (text, params) => pool.query(text, params);
+// export const query = async (text, params) => {
+//   try {
+//     return await pool.query(text, params);
+//   } catch (err) {
+//     console.error('❌ Query error:', err);
+//     throw err;
+//   }
+// };
+ 
 export { pool };
